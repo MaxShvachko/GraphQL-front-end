@@ -1,4 +1,3 @@
-
 import { GetServerSidePropsContext } from 'next';
 import { initUrqlClient } from 'next-urql';
 import { ssrExchange, Client } from 'urql';

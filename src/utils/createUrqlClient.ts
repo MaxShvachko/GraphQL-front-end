@@ -1,7 +1,6 @@
 import { cacheExchange } from '@urql/exchange-graphcache';
 import { dedupExchange, fetchExchange } from 'urql'
 import { SSRExchange, withUrqlClient as UrqlHOC } from 'next-urql';
-import cookies from 'nookies';
 
 import { API_HOST } from 'src/constants/api';
 import { LoginMutation, LogoutMutation, MeDocument, MeQuery, RegistrationMutation } from 'src/generated/graphql';
