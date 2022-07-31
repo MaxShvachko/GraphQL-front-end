@@ -1,12 +1,14 @@
 import { Flex, Button, Link, Text } from "@chakra-ui/react";
 import { Spinner } from '@chakra-ui/react'
 import LinkNext from 'next/link';
+
 import { ROUTES } from "src/constants/routes";
 import { useLogoutMutation, useMeQuery } from "src/generated/graphql";
 
 const NavBar = () => {
   const [{ data, fetching }] = useMeQuery();
   const [{ fetching: logoutFetching }, logout] = useLogoutMutation();
+
   let body = <></>;
 
   const handleLogout = () => logout();

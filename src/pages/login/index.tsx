@@ -6,6 +6,8 @@ import { useLoginMutation } from '../..//generated/graphql';
 import { formatErrors } from 'src/utils/formatErrors';
 import { useRouter } from 'next/router';
 import { ROUTES } from 'src/constants/routes';
+import { withUrqlClient } from 'next-urql';
+import { createUrqlClient } from 'src/utils/createUrqlClient';
 
 interface Props {
 
@@ -65,5 +67,4 @@ const Login = ({}: Props) => {
   );
 };
 
-export default Login
-
+export default withUrqlClient(createUrqlClient)(Login)
