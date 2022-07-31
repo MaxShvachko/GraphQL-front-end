@@ -1,5 +1,9 @@
 import { Box } from "@chakra-ui/react"
-import NavBar from "src/components/molecules/NavBar"
+import dynamic from 'next/dynamic'
+
+const NavBar = dynamic(() => import("src/components/molecules/NavBar"), {
+  ssr: false,
+});
 
 interface Props {
   children: React.ReactNode;

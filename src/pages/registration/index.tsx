@@ -1,10 +1,11 @@
 import { Box, Button, FormControl, FormErrorMessage, FormLabel, Input } from '@chakra-ui/react';
 import { Formik, Form, Field } from 'formik';
-import { Wrapper } from '../../components/template/Wrapper/Wrapper';
-import { InputField } from '../../components/atoms/InputField';
-import { useMutation } from 'urql';
+import { withUrqlClient } from 'next-urql';
+import { Wrapper } from 'src/components/template/Wrapper/Wrapper';
+import { InputField } from 'src/components/atoms/InputField';
 import { useRegistrationMutation } from 'src/generated/graphql';
 import { formatErrors } from 'src/utils/formatErrors';
+import { createUrqlClient } from 'src/utils/createUrqlClient';
 
 interface Props {
 
@@ -61,5 +62,5 @@ const Register = ({}: Props) => {
   );
 };
 
-export default Register
+export default withUrqlClient(createUrqlClient)(Register)
 
