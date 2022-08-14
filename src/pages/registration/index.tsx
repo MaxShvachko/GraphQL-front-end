@@ -7,14 +7,11 @@ import { useRegistrationMutation } from 'src/generated/graphql';
 import { formatErrors } from 'src/utils/formatErrors';
 import { createUrqlClient } from 'src/utils/createUrqlClient';
 
-interface Props {
-
-}
-
-const Register = ({}: Props) => {
+const Register = () => {
   const [{ data, fetching }, registration] = useRegistrationMutation();
 
   const initialValues = {
+    email: '',
     nick_name: '',
     password: ''
   };
@@ -33,18 +30,25 @@ const Register = ({}: Props) => {
         {({ values, isSubmitting }) => (
           <Form>
             <Box mt={4}>
-            <InputField
-              label='Nick Name'
-              name='nick_name'
-              placeholder='Nick Name'
-            />
+              <InputField
+                label='Email'
+                name='email'
+                placeholder='Email'
+              />
             </Box>
             <Box mt={4}>
-            <InputField
-              label='Password'
-              name='password'
-              placeholder='Password'
-            />
+              <InputField
+                label='Nick Name'
+                name='nick_name'
+                placeholder='Nick Name'
+              />
+            </Box>
+            <Box mt={4}>
+              <InputField
+                label='Password'
+                name='password'
+                placeholder='Password'
+              />
             </Box>
             <Button
               mt={4}
