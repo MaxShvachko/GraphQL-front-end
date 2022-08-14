@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, FormErrorMessage, FormLabel, Input } from '@chakra-ui/react';
+import { Box, Button } from '@chakra-ui/react';
 import { Formik, Form, Field } from 'formik';
 import { Wrapper } from 'src/components/template/Wrapper/Wrapper';
 import { InputField } from 'src/components/atoms/InputField';
@@ -9,16 +9,12 @@ import { ROUTES } from 'src/constants/routes';
 import { withUrqlClient } from 'next-urql';
 import { createUrqlClient } from 'src/utils/createUrqlClient';
 
-interface Props {
-
-}
-
-const Login = ({}: Props) => {
+const Login = () => {
   const { push } = useRouter();
   const [{ fetching }, login] = useLoginMutation();
 
   const initialValues = {
-    nick_name: '',
+    email: '',
     password: ''
   };
 
@@ -35,21 +31,21 @@ const Login = ({}: Props) => {
           }
         }}
       >
-        {({ values, isSubmitting }) => (
+        {() => (
           <Form>
             <Box mt={4}>
-            <InputField
-              label='Nick Name'
-              name='nick_name'
-              placeholder='Nick Name'
-            />
+              <InputField
+                label='Email'
+                name='email'
+                placeholder='Email'
+              />
             </Box>
             <Box mt={4}>
-            <InputField
-              label='Password'
-              name='password'
-              placeholder='Password'
-            />
+              <InputField
+                label='Password'
+                name='password'
+                placeholder='Password'
+              />
             </Box>
             <Button
               mt={4}

@@ -1,4 +1,4 @@
-mutation Login($options: RegisterParams!) {
+mutation Login($options: LogInParams!) {
   login(options: $options) {
     user {
       ...RegularUser
