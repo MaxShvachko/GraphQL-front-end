@@ -19,18 +19,23 @@ const NavBar = () => {
     body = (
     <>
       <Link textColor="cyan.100" mr={4}>
-          <LinkNext href={ROUTES.LOGIN}>
-            Log In
-          </LinkNext>
-        </Link>
-        <Link textColor="cyan.100" mr={4}>
-          <LinkNext href={ROUTES.REGISTRATION}>
-            Registration
-          </LinkNext>
-        </Link>
-        <Link textColor="cyan.100" mr={4}>
-          <LinkNext href={ROUTES.HOME}>
-            Home
+        <LinkNext href={ROUTES.LOGIN}>
+          Log In
+        </LinkNext>
+      </Link>
+      <Link textColor="cyan.100" mr={4}>
+        <LinkNext href={ROUTES.REGISTRATION}>
+          Registration
+        </LinkNext>
+      </Link>
+      <Link textColor="cyan.100" mr={4}>
+        <LinkNext href={ROUTES.HOME}>
+          Home
+       </LinkNext>
+      </Link>
+      <Link textColor="cyan.100" mr={4}>
+        <LinkNext href={ROUTES.FORGOT_PASSWORD}>
+          Forgot Password
         </LinkNext>
       </Link>
     </>)

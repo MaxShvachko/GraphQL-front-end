@@ -3,7 +3,7 @@ import { dedupExchange, fetchExchange } from 'urql'
 import { SSRExchange, withUrqlClient as UrqlHOC } from 'next-urql';
 
 import { API_HOST } from 'src/constants/api';
-import { LoginMutation, LogoutMutation, MeDocument, MeQuery, RegistrationMutation } from 'src/generated/graphql';
+import { ChangePasswordMutation, LoginMutation, LogoutMutation, MeDocument, MeQuery, RegistrationMutation } from 'src/generated/graphql';
 import { typedUpdateQueries } from 'src/utils/betterUpdateQueries';
 
 export const createUrqlClient = ((ssrCache: SSRExchange) => ({ 
@@ -59,6 +59,21 @@ export const createUrqlClient = ((ssrCache: SSRExchange) => ({
               }
            })
         },
+        changePassword: (resultValue, _args, cache, _info) => {
+          typedUpdateQueries<ChangePasswordMutation, MeQuery>(
+           cache,
+           { query: MeDocument },
+           resultValue,
+           (result, query) => {
+             if (result.changePassword.errors) {
+               return query;
+             } else {
+               return {
+                 me: result.changePassword,
+               }
+             }
+           })
+         },
       }
     }
   }), 

@@ -5,8 +5,9 @@ import { InputField } from 'src/components/atoms/InputField';
 import { useLoginMutation } from 'src/generated/graphql';
 import { formatErrors } from 'src/utils/formatErrors';
 import { useRouter } from 'next/router';
-import { ROUTES } from 'src/constants/routes';
 import { withUrqlClient } from 'next-urql';
+
+import { ROUTES } from 'src/constants/routes';
 import { createUrqlClient } from 'src/utils/createUrqlClient';
 
 const Login = () => {
