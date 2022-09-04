@@ -45,6 +45,11 @@ const NavBar = () => {
         <Button isLoading={logoutFetching} ml={4} onClick={handleLogout}>
           Log Out
         </Button>
+        <Link textColor="cyan.100" mr={4}>
+          <LinkNext href={ROUTES.CREATE_POST}>
+            Create Post
+        </LinkNext>
+      </Link>
         <Text lineHeight={2.2}>
          {data.me.user.nick_name}
         </Text>
@@ -53,7 +58,15 @@ const NavBar = () => {
   }
 
   return (
-    <Flex flexDir="row-reverse" backgroundColor="tomato" padding={4} ml="auto">
+    <Flex 
+      position="static" 
+      flexDir="row-reverse"
+      top={0}
+      zIndex={3}
+      backgroundColor="tomato"
+      padding={4}
+      ml="auto"
+    >
         {body}
     </Flex>
   )

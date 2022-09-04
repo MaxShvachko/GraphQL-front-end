@@ -1,10 +1,27 @@
 import { cacheExchange } from '@urql/exchange-graphcache';
-import { dedupExchange, fetchExchange } from 'urql'
+import { dedupExchange, Exchange, fetchExchange } from 'urql'
 import { SSRExchange, withUrqlClient as UrqlHOC } from 'next-urql';
+import { pipe, tap } from 'wonka';
+import Router from 'next/router';
 
 import { API_HOST } from 'src/constants/api';
 import { ChangePasswordMutation, LoginMutation, LogoutMutation, MeDocument, MeQuery, RegistrationMutation } from 'src/generated/graphql';
 import { typedUpdateQueries } from 'src/utils/betterUpdateQueries';
+import { ROUTES } from 'src/constants/routes';
+
+const errorExchange: Exchange = ({ forward }) => (ops$) => {
+  return pipe(
+    forward(ops$),
+    tap(({ error })=> {
+      if (error) {
+        if (error?.message?.includes('not authenticated')) {
+          Router.replace(ROUTES.LOGIN);
+        }
+      }
+    })
+  )
+} 
+
 
 export const createUrqlClient = ((ssrCache: SSRExchange) => ({ 
   url: API_HOST,
@@ -78,11 +95,12 @@ export const createUrqlClient = ((ssrCache: SSRExchange) => ({
     }
   }), 
   ssrCache,
-  fetchExchange
+  fetchExchange,
+  errorExchange
   ],
 }));
 
 export const withUrqlClient = UrqlHOC(
   createUrqlClient,
-  { ssr: false}
+  { ssr: false }
 );

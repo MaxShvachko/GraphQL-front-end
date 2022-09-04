@@ -67,4 +67,3 @@ const Register = () => {
 };
 
 export default withUrqlClient(createUrqlClient)(Register)
-

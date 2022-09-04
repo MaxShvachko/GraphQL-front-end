@@ -1,0 +1,8 @@
+mutation CreatePost($options: PostParams!) {
+  createPost(options: $options) {
+    id
+    createdAt
+    text
+    title
+  }
+}
