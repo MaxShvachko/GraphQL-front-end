@@ -13,6 +13,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  DateTime: any;
 };
 
 export type ChangePasswordParams = {
@@ -51,7 +52,7 @@ export type MutationChangePasswordArgs = {
 
 
 export type MutationCreatePostArgs = {
-  title: Scalars['String'];
+  options: PostParams;
 };
 
 
@@ -83,9 +84,17 @@ export type MutationUpdatePostArgs = {
 export type Post = {
   __typename?: 'Post';
   createdAt: Scalars['String'];
+  creatorId: Scalars['String'];
   id: Scalars['Float'];
+  points: Scalars['Float'];
+  text: Scalars['String'];
   title: Scalars['String'];
   updatedAt: Scalars['String'];
+};
+
+export type PostParams = {
+  text: Scalars['String'];
+  title: Scalars['String'];
 };
 
 export type Query = {
@@ -109,11 +118,11 @@ export type RegisterParams = {
 
 export type User = {
   __typename?: 'User';
-  createdAt: Scalars['String'];
+  createdAt: Scalars['DateTime'];
   email: Scalars['String'];
   id: Scalars['Float'];
   nick_name: Scalars['String'];
-  updatedAt: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type UserResponse = {
@@ -122,7 +131,14 @@ export type UserResponse = {
   user?: Maybe<User>;
 };
 
-export type RegularUserFragment = { __typename?: 'User', id: number, nick_name: string, createdAt: string, email: string };
+export type RegularUserFragment = { __typename?: 'User', id: number, nick_name: string, createdAt: any, email: string };
+
+export type CreatePostMutationVariables = Exact<{
+  options: PostParams;
+}>;
+
+
+export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'Post', id: number, createdAt: string, text: string, title: string } };
 
 export type ForgotPasswordMutationVariables = Exact<{
   email: Scalars['String'];
@@ -136,7 +152,7 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserResponse', user?: { __typename?: 'User', id: number, nick_name: string, createdAt: string, email: string } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserResponse', user?: { __typename?: 'User', id: number, nick_name: string, createdAt: any, email: string } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
 
 export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -148,19 +164,19 @@ export type ChangePasswordMutationVariables = Exact<{
 }>;
 
 
-export type ChangePasswordMutation = { __typename?: 'Mutation', changePassword: { __typename?: 'UserResponse', user?: { __typename?: 'User', id: number, nick_name: string, createdAt: string, email: string } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
+export type ChangePasswordMutation = { __typename?: 'Mutation', changePassword: { __typename?: 'UserResponse', user?: { __typename?: 'User', id: number, nick_name: string, createdAt: any, email: string } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
 
 export type RegistrationMutationVariables = Exact<{
   options: RegisterParams;
 }>;
 
 
-export type RegistrationMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, user?: { __typename?: 'User', id: number, nick_name: string, createdAt: string, email: string } | null } };
+export type RegistrationMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, user?: { __typename?: 'User', id: number, nick_name: string, createdAt: any, email: string } | null } };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me: { __typename?: 'UserResponse', user?: { __typename?: 'User', id: number, nick_name: string, createdAt: string, email: string } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
+export type MeQuery = { __typename?: 'Query', me: { __typename?: 'UserResponse', user?: { __typename?: 'User', id: number, nick_name: string, createdAt: any, email: string } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
 
 export type PostsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -175,6 +191,20 @@ export const RegularUserFragmentDoc = gql`
   email
 }
     `;
+export const CreatePostDocument = gql`
+    mutation CreatePost($options: PostParams!) {
+  createPost(options: $options) {
+    id
+    createdAt
+    text
+    title
+  }
+}
+    `;
+
+export function useCreatePostMutation() {
+  return Urql.useMutation<CreatePostMutation, CreatePostMutationVariables>(CreatePostDocument);
+};
 export const ForgotPasswordDocument = gql`
     mutation ForgotPassword($email: String!) {
   forgotPassword(email: $email)
