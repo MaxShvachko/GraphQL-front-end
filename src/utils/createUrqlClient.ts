@@ -1,4 +1,4 @@
-import { cacheExchange } from '@urql/exchange-graphcache';
+import { cacheExchange, Resolver } from '@urql/exchange-graphcache';
 import { dedupExchange, Exchange, fetchExchange } from 'urql'
 import { SSRExchange, withUrqlClient as UrqlHOC } from 'next-urql';
 import { pipe, tap } from 'wonka';
@@ -22,6 +22,44 @@ const errorExchange: Exchange = ({ forward }) => (ops$) => {
   )
 } 
 
+export const cursorPagination = (typeName: string):  Resolver<any, any, any> => {
+  return (_parent, fieldArgs, cache, info) => {
+    const { parentKey: entityKey, fieldName } = info;
+
+    const allFields = cache.inspectFields(entityKey);
+    const fieldInfos = allFields.filter(info => info.fieldName === fieldName);
+    const size = fieldInfos.length;
+    if (size === 0) {
+      return undefined;
+    }
+
+    const result: string[] = [];
+
+    const cashData = cache.resolve(entityKey, fieldName, fieldArgs);
+
+    info.partial = !cashData;
+
+    let hasMore = true;
+
+    fieldInfos.forEach(info => {
+      const key = cache.resolve(entityKey, info.fieldKey) as string;
+      const data = cache.resolve(key, 'data') as string[];
+      const _hasMore = cache.resolve(key, 'hasMore') as string[];
+
+      if (!_hasMore) {
+        hasMore = _hasMore
+      }
+
+      result.push(...data);
+    });
+
+    return {
+      __typename: typeName,
+      data: result,
+      hasMore
+    };
+  };
+};
 
 export const createUrqlClient = ((ssrCache: SSRExchange) => ({ 
   url: API_HOST,
@@ -29,6 +67,15 @@ export const createUrqlClient = ((ssrCache: SSRExchange) => ({
     credentials: 'include' as const,
   },
   exchanges: [dedupExchange, cacheExchange({
+    keys: {
+      PaginatedPost: () => null,
+      UserResponse: () => null
+    },
+    resolvers: {
+      Query: {
+        posts: cursorPagination('PaginatedPost')
+      }
+    },
     updates: {
       Mutation: {
         login: (resultValue, _args, cache, _info) => {
