@@ -1,5 +1,5 @@
-import { Box, Button, FormControl, FormErrorMessage, FormLabel, Input } from '@chakra-ui/react';
-import { Formik, Form, Field } from 'formik';
+import { Box, Button } from '@chakra-ui/react';
+import { Formik, Form } from 'formik';
 import { withUrqlClient } from 'next-urql';
 import { Wrapper } from 'src/components/template/Wrapper/Wrapper';
 import { InputField } from 'src/components/atoms/InputField';
@@ -8,7 +8,7 @@ import { formatErrors } from 'src/utils/formatErrors';
 import { createUrqlClient } from 'src/utils/createUrqlClient';
 
 const Register = () => {
-  const [{ data, fetching }, registration] = useRegistrationMutation();
+  const [{ fetching }, registration] = useRegistrationMutation();
 
   const initialValues = {
     email: '',

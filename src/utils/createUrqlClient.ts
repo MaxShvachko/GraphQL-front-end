@@ -4,7 +4,7 @@ import { SSRExchange, withUrqlClient as UrqlHOC } from 'next-urql';
 import { pipe, tap } from 'wonka';
 import Router from 'next/router';
 
-import { API_HOST } from 'src/constants/api';
+import { API_HOST, POSTS_LIMIT } from 'src/constants/api';
 import { ChangePasswordMutation, LoginMutation, LogoutMutation, MeDocument, MeQuery, RegistrationMutation } from 'src/generated/graphql';
 import { typedUpdateQueries } from 'src/utils/betterUpdateQueries';
 import { ROUTES } from 'src/constants/routes';
@@ -78,6 +78,24 @@ export const createUrqlClient = ((ssrCache: SSRExchange) => ({
     },
     updates: {
       Mutation: {
+        vote: (_resultValue, _args, cache, _info) => {
+          const allFields = cache.inspectFields('Query');
+
+          const postsCash = allFields.filter((info) => info.fieldName === 'posts');
+
+          postsCash.forEach((post) => {
+            cache.invalidate('Query', 'posts', post.arguments);
+          });
+        },
+        createPost: (_resultValue, _args, cache, _info) => {
+          const allFields = cache.inspectFields('Query');
+
+          const postsCash = allFields.filter((info) => info.fieldName === 'posts');
+
+          postsCash.forEach((post) => {
+            cache.invalidate('Query', 'posts', post.arguments);
+          });
+        },
         login: (resultValue, _args, cache, _info) => {
          typedUpdateQueries<LoginMutation, MeQuery>(
           cache,

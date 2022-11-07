@@ -1,6 +1,6 @@
-import { Flex, Button, Link, Text } from "@chakra-ui/react";
+import { Flex, Button, Text } from "@chakra-ui/react";
 import { Spinner } from '@chakra-ui/react'
-import LinkNext from 'next/link';
+import Link from 'src/components/atoms/Link'
 
 import { ROUTES } from "src/constants/routes";
 import { useLogoutMutation, useMeQuery } from "src/generated/graphql";
@@ -18,25 +18,14 @@ const NavBar = () => {
   } else if (!data?.me?.user) {
     body = (
     <>
-      <Link textColor="cyan.100" mr={4}>
-        <LinkNext href={ROUTES.LOGIN}>
+      <Link href={ROUTES.LOGIN}>
           Log In
-        </LinkNext>
       </Link>
-      <Link textColor="cyan.100" mr={4}>
-        <LinkNext href={ROUTES.REGISTRATION}>
+      <Link href={ROUTES.REGISTRATION}>
           Registration
-        </LinkNext>
       </Link>
-      <Link textColor="cyan.100" mr={4}>
-        <LinkNext href={ROUTES.HOME}>
-          Home
-       </LinkNext>
-      </Link>
-      <Link textColor="cyan.100" mr={4}>
-        <LinkNext href={ROUTES.FORGOT_PASSWORD}>
+      <Link href={ROUTES.FORGOT_PASSWORD}>
           Forgot Password
-        </LinkNext>
       </Link>
     </>)
   } else if (data?.me?.user) {
@@ -45,14 +34,12 @@ const NavBar = () => {
         <Button isLoading={logoutFetching} ml={4} onClick={handleLogout}>
           Log Out
         </Button>
-        <Link textColor="cyan.100" mr={4}>
-          <LinkNext href={ROUTES.CREATE_POST}>
-            Create Post
-        </LinkNext>
-      </Link>
-        <Text lineHeight={2.2}>
-         {data.me.user.nick_name}
+        <Text lineHeight={2.5}>
+          {data.me.user.nick_name}
         </Text>
+        <Link href={ROUTES.CREATE_POST}>
+            Create Post
+       </Link>
       </>
     )
   }
@@ -67,7 +54,10 @@ const NavBar = () => {
       padding={4}
       ml="auto"
     >
-        {body}
+      {body}
+      <Link href={ROUTES.HOME}>
+          Home
+      </Link>
     </Flex>
   )
 }
