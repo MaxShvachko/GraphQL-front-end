@@ -3,7 +3,7 @@ import { AppProps } from 'next/app';
 
 import theme from '../theme';
 
-function MyApp({ Component, pageProps }: AppProps) {
+function LiReddit({ Component, pageProps }: AppProps) {
 
   return (
     <ChakraProvider theme={theme}>
@@ -12,4 +12,4 @@ function MyApp({ Component, pageProps }: AppProps) {
   )
 }
 
-export default MyApp
+export default LiReddit
