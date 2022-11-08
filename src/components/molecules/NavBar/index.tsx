@@ -1,9 +1,9 @@
-import { Flex, Button, Text } from "@chakra-ui/react";
-import { Spinner } from '@chakra-ui/react'
-import Link from 'src/components/atoms/Link'
+import { Flex, Button, Text } from '@chakra-ui/react';
+import { Spinner } from '@chakra-ui/react';
+import { ROUTES } from 'src/constants/routes';
+import Link from 'src/components/atoms/Link';
 
-import { ROUTES } from "src/constants/routes";
-import { useLogoutMutation, useMeQuery } from "src/generated/graphql";
+import { useLogoutMutation, useMeQuery } from 'src/generated/graphql';
 
 const NavBar = () => {
   const [{ data, fetching }] = useMeQuery();
@@ -14,20 +14,20 @@ const NavBar = () => {
   const handleLogout = () => logout();
 
   if (fetching) {
-    body = <Spinner />
+    body = <Spinner />;
   } else if (!data?.me?.user) {
     body = (
-    <>
-      <Link href={ROUTES.LOGIN}>
+      <>
+        <Link href={ROUTES.LOGIN}>
           Log In
-      </Link>
-      <Link href={ROUTES.REGISTRATION}>
+        </Link>
+        <Link href={ROUTES.REGISTRATION}>
           Registration
-      </Link>
-      <Link href={ROUTES.FORGOT_PASSWORD}>
+        </Link>
+        <Link href={ROUTES.FORGOT_PASSWORD}>
           Forgot Password
-      </Link>
-    </>)
+        </Link>
+      </>);
   } else if (data?.me?.user) {
     body = (
       <>
@@ -38,15 +38,15 @@ const NavBar = () => {
           {data.me.user.nick_name}
         </Text>
         <Link href={ROUTES.CREATE_POST}>
-            Create Post
-       </Link>
+          Create Post
+        </Link>
       </>
-    )
+    );
   }
 
   return (
-    <Flex 
-      position="static" 
+    <Flex
+      position="static"
       flexDir="row-reverse"
       top={0}
       zIndex={3}
@@ -56,10 +56,10 @@ const NavBar = () => {
     >
       {body}
       <Link href={ROUTES.HOME}>
-          Home
+        Home
       </Link>
     </Flex>
-  )
-}
+  );
+};
 
 export default NavBar;

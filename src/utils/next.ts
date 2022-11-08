@@ -18,7 +18,7 @@ export const authorizedGuard = (callback?: AsyncCallback) => async(ctx: GetServe
 
   return {
     props: {
-      urqlState: ssrCache.extractData(),
-    },
+      urqlState: ssrCache.extractData()
+    }
   };
-}
+};

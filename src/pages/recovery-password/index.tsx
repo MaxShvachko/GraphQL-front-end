@@ -1,14 +1,14 @@
-import { Box, Button, useToast } from "@chakra-ui/react";
-import { Formik, Form, FormikHelpers } from "formik";
+import { Box, Button, useToast } from '@chakra-ui/react';
+import { Formik, Form, FormikHelpers } from 'formik';
 import { withUrqlClient } from 'next-urql';
-import { useRouter } from "next/router";
+import { useRouter } from 'next/router';
 
-import { InputField } from "src/components/atoms/InputField";
-import { Wrapper } from "src/components/template/Wrapper/Wrapper";
-import { ROUTES } from "src/constants/routes";
-import { formatErrors } from "src/utils/formatErrors";
-import { useChangePasswordMutation } from 'src/generated/graphql';
+import { ROUTES } from 'src/constants/routes';
+import { formatErrors } from 'src/utils/formatErrors';
 import { createUrqlClient } from 'src/utils/createUrqlClient';
+import { InputField } from 'src/components/atoms/InputField';
+import { Wrapper } from 'src/components/template/Wrapper/Wrapper';
+import { useChangePasswordMutation } from 'src/generated/graphql';
 
 function RecoveryPassword() {
   const { push, query } = useRouter();
@@ -20,7 +20,10 @@ function RecoveryPassword() {
     confirm_new_password: ''
   };
 
-  const handleChangePassword = async(values: typeof initialValues, { setErrors }: FormikHelpers<typeof initialValues>) => {
+  const handleChangePassword = async(
+    values: typeof initialValues,
+    { setErrors }: FormikHelpers<typeof initialValues>
+  ) => {
     const { data } = await changePassword({ options: { ...values, token: query.token as string } });
     if (data?.changePassword.errors) {
       setErrors(formatErrors(data?.changePassword.errors));
@@ -29,15 +32,15 @@ function RecoveryPassword() {
         description: data?.changePassword.errors[0].message,
         status: 'error',
         duration: 9000,
-        isClosable: true,
+        isClosable: true
       });
     } else if (data?.changePassword.user) {
       push(ROUTES.HOME);
     }
-  }
+  };
 
   return (
-    <Wrapper variant='small'>
+    <Wrapper variant="small">
       <Formik
         initialValues={initialValues}
         onSubmit={handleChangePassword}
@@ -46,16 +49,16 @@ function RecoveryPassword() {
           <Form>
             <Box mt={4}>
               <InputField
-                label='New Password'
-                name='new_password'
-                placeholder='Enter a new password'
+                label="New Password"
+                name="new_password"
+                placeholder="Enter a new password"
               />
             </Box>
             <Box mt={4}>
               <InputField
-                label='Confirm New Password'
-                name='confirm_new_password'
-                placeholder='Confirm New Password'
+                label="Confirm New Password"
+                name="confirm_new_password"
+                placeholder="Confirm New Password"
               />
             </Box>
             <Button
@@ -63,7 +66,7 @@ function RecoveryPassword() {
               variant="solid"
               colorScheme="linkedin"
               isLoading={fetching}
-              type='submit'
+              type="submit"
             >
               Change Password
             </Button>
@@ -72,6 +75,6 @@ function RecoveryPassword() {
       </Formik>
     </Wrapper>
   );
-};
+}
 
-export default withUrqlClient(createUrqlClient)(RecoveryPassword)
+export default withUrqlClient(createUrqlClient)(RecoveryPassword);

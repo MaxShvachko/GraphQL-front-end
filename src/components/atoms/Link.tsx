@@ -1,5 +1,5 @@
 import LinkNext from 'next/link';
-import { Link as ChackraLink } from "@chakra-ui/react";
+import { Link as ChackraLink } from '@chakra-ui/react';
 import { Url } from 'url';
 
 interface Props {
@@ -7,14 +7,14 @@ interface Props {
   href: Url | string
 }
 
-const Link = ({ children, href}: Props) => {
+const Link = ({ children, href }: Props) => {
   return (
     <ChackraLink alignItems="center" display="flex" textColor="cyan.100" mr={4}>
       <LinkNext href={href}>
         {children}
       </LinkNext>
     </ChackraLink>
-  )
-}
+  );
+};
 
 export default Link;
