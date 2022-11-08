@@ -1,14 +1,14 @@
 import { Box, Button } from '@chakra-ui/react';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form } from 'formik';
 import { useRouter } from 'next/router';
 import { withUrqlClient } from 'next-urql';
 
-import { Wrapper } from 'src/components/template/Wrapper/Wrapper';
-import { InputField } from 'src/components/atoms/InputField';
-import { useLoginMutation } from 'src/generated/graphql';
-import { formatErrors } from 'src/utils/formatErrors';
 import { ROUTES } from 'src/constants/routes';
+import { formatErrors } from 'src/utils/formatErrors';
 import { createUrqlClient } from 'src/utils/createUrqlClient';
+import { InputField } from 'src/components/atoms/InputField';
+import { Wrapper } from 'src/components/template/Wrapper/Wrapper';
+import { useLoginMutation } from 'src/generated/graphql';
 
 const Login = () => {
   const { push } = useRouter();
@@ -20,7 +20,7 @@ const Login = () => {
   };
 
   return (
-    <Wrapper variant='small'>
+    <Wrapper variant="small">
       <Formik
         initialValues={initialValues}
         onSubmit={async(values, { setErrors }) => {
@@ -36,16 +36,16 @@ const Login = () => {
           <Form>
             <Box mt={4}>
               <InputField
-                label='Email'
-                name='email'
-                placeholder='Email'
+                label="Email"
+                name="email"
+                placeholder="Email"
               />
             </Box>
             <Box mt={4}>
               <InputField
-                label='Password'
-                name='password'
-                placeholder='Password'
+                label="Password"
+                name="password"
+                placeholder="Password"
               />
             </Box>
             <Button
@@ -53,7 +53,7 @@ const Login = () => {
               variant="solid"
               colorScheme="linkedin"
               isLoading={fetching}
-              type='submit'
+              type="submit"
             >
               Login
             </Button>
@@ -64,4 +64,4 @@ const Login = () => {
   );
 };
 
-export default withUrqlClient(createUrqlClient)(Login)
+export default withUrqlClient(createUrqlClient)(Login);

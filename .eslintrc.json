@@ -1,3 +1,145 @@
 {
-  "extends": ["next/core-web-vitals", "react-app"]
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "overrides": [
+    {
+      "files": ["**/*.test.ts?(x)"],
+      "extends": ["plugin:testing-library/react"]
+    }
+  ],
+  "rules": {
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/no-unused-vars": "error",
+    "jest/no-alias-methods": "off",
+    "react/jsx-indent": ["error", 2],
+    "react/jsx-indent-props": ["error", 2],
+    "arrow-body-style": "off",
+    "array-bracket-spacing": "error",
+    "arrow-parens": "error",
+    "arrow-spacing": "error",
+    "block-spacing": "error",
+    "brace-style": "error",
+    "comma-dangle": "error",
+    "comma-spacing": "error",
+    "comma-style": "error",
+    "computed-property-spacing": "error",
+    "eol-last": "error",
+    "func-call-spacing": "error",
+    "implicit-arrow-linebreak": "error",
+    "indent": ["error", 2, { "SwitchCase": 1 }],
+    "jsx-quotes": ["error", "prefer-double"],
+    "key-spacing": "error",
+    "keyword-spacing": "error",
+    "max-len": ["error", {
+      "code": 120 ,
+      "ignoreStrings": true,
+      "ignoreTemplateLiterals": true,
+      "ignoreRegExpLiterals": true,
+      "ignoreComments": true
+    }],
+    "no-multi-spaces": "error",
+    "no-multiple-empty-lines": ["error", { "max": 1 }],
+    "no-trailing-spaces": "error",
+    "no-whitespace-before-property": "error",
+    "object-curly-spacing": ["error", "always"],
+    "padded-blocks": ["error", "never"],
+    "quotes": ["error", "single"],
+    "rest-spread-spacing": "error",
+    "semi": [2, "always"],
+    "semi-style": "error",
+    "space-before-blocks": "error",
+    "space-before-function-paren": ["error", "never"],
+    "space-in-parens": "error",
+    "space-infix-ops": "error",
+    "space-unary-ops": "error",
+    "template-curly-spacing": "error",
+    "react/jsx-tag-spacing": ["error", { "beforeSelfClosing": "always" }],
+    "import/order": ["error", {
+      "groups": [
+        "external",
+        "builtin",
+        "internal",
+        "parent",
+        "sibling",
+        "index"
+     ],
+    "pathGroups": [
+        {
+          "pattern": "src/constants/**",
+          "group": "internal" ,
+          "position": "before"
+        },
+        {
+          "pattern": "src/contexts/**",
+          "group": "internal",
+          "position": "before"
+        },
+        {
+          "pattern": "src/api/**",
+          "group": "internal",
+          "position": "before"
+        },
+        {
+          "pattern": "src/lib/**",
+          "group": "internal",
+          "position": "before"
+        },
+        {
+          "pattern": "src/utils/**",
+          "group": "internal",
+          "position": "before"
+        },
+        {
+          "pattern": "src/hooks/**",
+          "group": "internal",
+          "position": "before"
+        },
+        {
+          "pattern": "src/components/atoms/**",
+          "group": "internal",
+          "position": "before"
+        },
+        {
+          "pattern": "src/components/molecules/**",
+          "group": "internal",
+          "position": "before"
+        },
+        {
+          "pattern": "src/components/organisms/**",
+          "group": "internal",
+          "position": "before"
+        },
+        {
+          "pattern": "src/components/templates/**",
+          "group": "internal",
+          "position": "before"
+        },
+        {
+          "pattern": "src/features/**",
+          "group": "internal",
+          "position": "before"
+        }
+     ]
+    }],
+    "jsx-a11y/no-noninteractive-tabindex": [
+      "error",
+      {
+        "tags": [],
+        "roles": ["tabpanel"],
+        "allowExpressionValues": true
+      }
+    ],
+    "react/jsx-no-target-blank": [0, {
+      "allowReferrer": true,
+      "enforceDynamicLinks": "always",
+      "warnOnSpreadAttributes": false,
+      "links": false,
+      "forms": false
+    }]
+  }
 }

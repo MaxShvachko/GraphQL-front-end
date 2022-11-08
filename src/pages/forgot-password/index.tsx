@@ -1,16 +1,16 @@
-import { Box, Button } from "@chakra-ui/react";
-import { useToast } from '@chakra-ui/react'
+import { Box, Button } from '@chakra-ui/react';
+import { useToast } from '@chakra-ui/react';
 import { withUrqlClient } from 'next-urql';
-import { Formik, Form } from "formik";
+import { Formik, Form } from 'formik';
 
-import { InputField } from "src/components/atoms/InputField";
-import { Wrapper } from "src/components/template/Wrapper/Wrapper";
-import { useForgotPasswordMutation } from 'src/generated/graphql';
 import { createUrqlClient } from 'src/utils/createUrqlClient';
+import { InputField } from 'src/components/atoms/InputField';
+import { Wrapper } from 'src/components/template/Wrapper/Wrapper';
+import { useForgotPasswordMutation } from 'src/generated/graphql';
 
 function ForgotPassword() {
   const [{ fetching }, frogotPassword] = useForgotPasswordMutation();
-  const toast = useToast()
+  const toast = useToast();
 
   const initialValues = {
     email: ''
@@ -24,20 +24,20 @@ function ForgotPassword() {
         description: 'Something went wrong',
         status: 'success',
         duration: 9000,
-        isClosable: true,
+        isClosable: true
       });
     } else {
       toast({
         description: 'Please check an email',
         status: 'success',
         duration: 9000,
-        isClosable: true,
-      })
+        isClosable: true
+      });
     }
-  }
+  };
 
   return (
-    <Wrapper variant='small'>
+    <Wrapper variant="small">
       <Formik
         initialValues={initialValues}
         onSubmit={handleForgotPassword}
@@ -46,9 +46,9 @@ function ForgotPassword() {
           <Form>
             <Box mt={4}>
               <InputField
-                label='Email'
-                name='email'
-                placeholder='Enter an email'
+                label="Email"
+                name="email"
+                placeholder="Enter an email"
               />
             </Box>
             <Button
@@ -56,7 +56,7 @@ function ForgotPassword() {
               variant="solid"
               colorScheme="linkedin"
               isLoading={fetching}
-              type='submit'
+              type="submit"
             >
               Restore Password
             </Button>
@@ -65,6 +65,6 @@ function ForgotPassword() {
       </Formik>
     </Wrapper>
   );
-};
+}
 
-export default withUrqlClient(createUrqlClient)(ForgotPassword)
+export default withUrqlClient(createUrqlClient)(ForgotPassword);

@@ -3,5 +3,5 @@ export const ROUTES = {
   REGISTRATION: '/registration',
   HOME: '/',
   FORGOT_PASSWORD: '/forgot-password',
-  CREATE_POST: '/create-post',
+  CREATE_POST: '/create-post'
 };

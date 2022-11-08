@@ -1,8 +1,8 @@
-import { Box } from "@chakra-ui/react"
-import dynamic from 'next/dynamic'
+import { Box } from '@chakra-ui/react';
+import dynamic from 'next/dynamic';
 
-const NavBar = dynamic(() => import("src/components/molecules/NavBar"), {
-  ssr: false,
+const NavBar = dynamic(() => import('src/components/molecules/NavBar'), {
+  ssr: false
 });
 
 interface Props {
@@ -18,5 +18,5 @@ export const Wrapper: React.FC<Props> = ({ children, variant = 'regular' }) => {
         {children}
       </Box>
     </>
-  )
-}
+  );
+};
