@@ -63,16 +63,16 @@ export const cursorPagination = (typeName: string): Resolver<any, any, any> => {
 };
 
 export const createUrqlClient = ((ssrCache: SSRExchange, ctx?: NextPageContext) => {
-  let cookies = '';
+  let cookie = '';
   if (ctx) {
-    cookies = ctx.req?.headers.cookie as string;
+    cookie = ctx.req?.headers.cookie as string;
   }
 
   return ({
     url: API_HOST,
     fetchOptions: {
       credentials: 'include' as const,
-      headers: cookies ? { cookies } : undefined
+      headers: cookie ? { cookie } : undefined
     },
     exchanges: [dedupExchange, cacheExchange({
       keys: {

@@ -1,8 +1,10 @@
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 import { Box, Flex, Heading, IconButton, Text, useToast } from '@chakra-ui/react';
 import { useEffect } from 'react';
+import { ROUTES } from 'src/constants/routes';
 
-import { PostsQuery, useVoteMutation } from 'src/generated/graphql';
+import { PostsQuery, useMeQuery, useVoteMutation } from 'src/generated/graphql';
+import Link from './Link';
 
 type PostType = PostsQuery['posts']['data'][0];
 
@@ -12,6 +14,7 @@ interface Props extends PostType {
 
 export const Post = ({ textSnippet, voteStatus, id, title, creator, points }: Props) => {
   const toast = useToast();
+  const [{ data }] = useMeQuery();
   const [{ fetching: fetchingVoteUp, error: errorVoteUp }, voteUp] = useVoteMutation();
   const [{ fetching: fetchingVoteDown, error: errorVoteDown }, voteDown] = useVoteMutation();
 
@@ -37,6 +40,7 @@ export const Post = ({ textSnippet, voteStatus, id, title, creator, points }: Pr
 
   const isVotedUp = voteStatus === 1;
   const isVotedDown = voteStatus === -1;
+  const isAuthenticated = Boolean(data?.me?.user);
 
   return (
     <Flex mb={5} p={5} shadow="md" borderWidth="1px">
@@ -44,27 +48,35 @@ export const Post = ({ textSnippet, voteStatus, id, title, creator, points }: Pr
         <IconButton
           onClick={handleVoteUp}
           isLoading={fetchingVoteUp}
-          disabled={fetchingVoteDown}
+          disabled={fetchingVoteDown || !isAuthenticated}
           aria-label="Updoot Up"
-          color={isVotedUp ? 'green' : undefined}
-          background="none"
+          background={isVotedUp ? 'green' : undefined}
+          color={isVotedUp ? 'white' : undefined}
+          _hover={{
+            color: isVotedUp ? undefined : 'teal.500'
+          }}
           height="24px"
-          icon={<ChevronUpIcon cursor="pointer" />}
+          icon={<ChevronUpIcon />}
         />
         <Text fontSize={14} textAlign="center">{points}</Text>
         <IconButton
           isLoading={fetchingVoteDown}
-          disabled={fetchingVoteUp}
-          background="none"
-          color={voteStatus === -1 ? 'red' : undefined}
+          disabled={fetchingVoteUp || !isAuthenticated}
+          background={isVotedDown ? 'red' : undefined}
+          color={isVotedDown ? 'white' : undefined}
           onClick={handleVoteDown}
+          _hover={{
+            color: isVotedDown ? undefined : 'teal.500'
+          }}
           height="24px"
           aria-label="Updoot Down"
-          icon={<ChevronDownIcon cursor="pointer" />}
+          icon={<ChevronDownIcon />}
         />
       </Flex>
       <Box>
-        <Heading fontSize="xl">{title}</Heading>
+        <Link textColor="black" href={ROUTES.POST(id)}>
+          <Heading fontSize="xl">{title}</Heading>
+        </Link>
         <Text fontSize={14} fontStyle="italic">{creator.nick_name}</Text>
         <Text mt={4}>{textSnippet}</Text>
       </Box>
