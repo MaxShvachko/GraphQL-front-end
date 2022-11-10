@@ -1,9 +1,9 @@
-import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
+import { ChevronDownIcon, CloseIcon, ChevronUpIcon } from '@chakra-ui/icons';
 import { Box, Flex, Heading, IconButton, Text, useToast } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { ROUTES } from 'src/constants/routes';
 
-import { PostsQuery, useMeQuery, useVoteMutation } from 'src/generated/graphql';
+import { PostsQuery, useDeletePostMutation, useMeQuery, useVoteMutation } from 'src/generated/graphql';
 import Link from './Link';
 
 type PostType = PostsQuery['posts']['data'][0];
@@ -17,12 +17,16 @@ export const Post = ({ textSnippet, voteStatus, id, title, creator, points }: Pr
   const [{ data }] = useMeQuery();
   const [{ fetching: fetchingVoteUp, error: errorVoteUp }, voteUp] = useVoteMutation();
   const [{ fetching: fetchingVoteDown, error: errorVoteDown }, voteDown] = useVoteMutation();
+  const [{ fetching: fetchingDeletePost, error: errorDeletePost }, deletePost] = useDeletePostMutation();
 
   useEffect(() => {
     let errorMessage = errorVoteUp?.message;
 
     if (errorVoteDown?.message) {
       errorMessage = errorVoteDown?.message;
+    }
+    if (errorDeletePost?.message) {
+      errorMessage = errorDeletePost?.message;
     }
 
     if (errorMessage) {
@@ -33,14 +37,17 @@ export const Post = ({ textSnippet, voteStatus, id, title, creator, points }: Pr
         isClosable: true
       });
     }
-  }, [errorVoteUp, errorVoteDown, toast]);
+  }, [errorVoteUp, errorVoteDown, errorDeletePost, toast]);
 
   const handleVoteUp = () => !isVotedUp && voteUp({ value: 1, postId: id });
   const handleVoteDown = () => !isVotedDown && voteDown({ value: -1, postId: id });
+  const handleDeletePost = () => deletePost({ id });
 
   const isVotedUp = voteStatus === 1;
   const isVotedDown = voteStatus === -1;
   const isAuthenticated = Boolean(data?.me?.user);
+
+  const isCreatorPost = creator.id === data?.me?.user?.id;
 
   return (
     <Flex mb={5} p={5} shadow="md" borderWidth="1px">
@@ -80,6 +87,19 @@ export const Post = ({ textSnippet, voteStatus, id, title, creator, points }: Pr
         <Text fontSize={14} fontStyle="italic">{creator.nick_name}</Text>
         <Text mt={4}>{textSnippet}</Text>
       </Box>
+      {isCreatorPost && (
+        <Flex flexDirection="row-reverse" flex={1}>
+          <IconButton
+            isLoading={fetchingDeletePost}
+            disabled={fetchingDeletePost}
+            onClick={handleDeletePost}
+            height="20px"
+            width="20px"
+            aria-label="Delete post"
+            icon={<CloseIcon width="14px" />}
+          />
+        </Flex>
+      )}
     </Flex>
   );
 };
