@@ -8,7 +8,7 @@ import { NextPageContext } from 'next/types';
 import { API_HOST } from 'src/constants/api';
 import { ROUTES } from 'src/constants/routes';
 import { typedUpdateQueries } from 'src/utils/betterUpdateQueries';
-import { ChangePasswordMutation, LoginMutation, LogoutMutation, MeDocument, MeQuery, RegistrationMutation } from 'src/generated/graphql';
+import { ChangePasswordMutation, DeletePostMutationVariables, LoginMutation, LogoutMutation, MeDocument, MeQuery, RegistrationMutation } from 'src/generated/graphql';
 
 const errorExchange: Exchange = ({ forward }) => (ops$) => {
   return pipe(
@@ -86,6 +86,9 @@ export const createUrqlClient = ((ssrCache: SSRExchange, ctx?: NextPageContext) 
       },
       updates: {
         Mutation: {
+          deletePost: (_resultValue, _args, cache) => {
+            cache.invalidate({ __typename: 'Post', id: (_args as DeletePostMutationVariables)?.id });
+          },
           vote: (_resultValue, _args, cache) => {
             const allFields = cache.inspectFields('Query');
 
