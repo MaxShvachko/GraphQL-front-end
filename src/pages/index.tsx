@@ -1,7 +1,5 @@
-import { Flex, Heading, Stack, Link, Button } from '@chakra-ui/react';
+import { Flex, Heading, Stack, Button } from '@chakra-ui/react';
 import { useState } from 'react';
-import LinkNext from 'next/link';
-import { ROUTES } from 'src/constants/routes';
 import { POSTS_LIMIT } from 'src/constants/api';
 import { withUrqlClient } from 'src/utils/createUrqlClient';
 import { authorizedGuard } from 'src/utils/next';
@@ -20,11 +18,6 @@ const Home = () => {
     <Wrapper>
       <Flex mb={5} align="center">
         <Heading>LiReddit</Heading>
-        <LinkNext target="_blank" href={ROUTES.CREATE_POST}>
-          <Link margin="auto" textColor="MenuText" mr={4}>
-            Create Post
-          </Link>
-        </LinkNext>
       </Flex>
       {!data?.posts.data && fetching && (
         <div>Loading...</div>
@@ -46,7 +39,7 @@ const Home = () => {
 };
 
 export const getServerSideProps = authorizedGuard(async(client, ctx) => {
-  await client.query(PostsDocument, { limit: POSTS_LIMIT, cursor: null }, ctx).toPromise();
+  await client.query(PostsDocument, { limit: POSTS_LIMIT }, ctx).toPromise();
 });
 
 export default withUrqlClient(Home);

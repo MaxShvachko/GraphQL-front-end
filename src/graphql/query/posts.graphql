@@ -1,18 +1,7 @@
 query Posts($limit: Int!, $cursor: String) {
   posts(limit: $limit, cursor: $cursor) {
     data {
-      id
-      points
-      createdAt
-      text
-      title
-      points
-      voteStatus
-      textSnippet
-      creator {
-        id
-        nick_name
-      }
+      ...PostSnippet
     }
     hasMore
   }
