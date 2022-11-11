@@ -1,4 +1,4 @@
-import { cacheExchange, Resolver } from '@urql/exchange-graphcache';
+import { Cache, cacheExchange, Resolver } from '@urql/exchange-graphcache';
 import { dedupExchange, Exchange, fetchExchange } from 'urql';
 import { SSRExchange, withUrqlClient as UrqlHOC } from 'next-urql';
 import { pipe, tap } from 'wonka';
@@ -62,6 +62,16 @@ export const cursorPagination = (typeName: string): Resolver<any, any, any> => {
   };
 };
 
+const invalidatePostCache = (cache: Cache) => {
+  const allFields = cache.inspectFields('Query');
+
+  const postsCash = allFields.filter((info) => info.fieldName === 'posts');
+
+  postsCash.forEach((post) => {
+    cache.invalidate('Query', 'posts', post.arguments);
+  });
+};
+
 export const createUrqlClient = ((ssrCache: SSRExchange, ctx?: NextPageContext) => {
   let cookie = '';
   if (ctx) {
@@ -99,15 +109,10 @@ export const createUrqlClient = ((ssrCache: SSRExchange, ctx?: NextPageContext) 
             });
           },
           createPost: (_resultValue, _args, cache) => {
-            const allFields = cache.inspectFields('Query');
-
-            const postsCash = allFields.filter((info) => info.fieldName === 'posts');
-
-            postsCash.forEach((post) => {
-              cache.invalidate('Query', 'posts', post.arguments);
-            });
+            invalidatePostCache(cache);
           },
           login: (resultValue, _args, cache) => {
+            invalidatePostCache(cache);
             typedUpdateQueries<LoginMutation, MeQuery>(
               cache,
               { query: MeDocument },
@@ -138,6 +143,7 @@ export const createUrqlClient = ((ssrCache: SSRExchange, ctx?: NextPageContext) 
               });
           },
           logout: (resultValue, _args, cache) => {
+            invalidatePostCache(cache);
             typedUpdateQueries<LogoutMutation, MeQuery>(
               cache,
               { query: MeDocument },
