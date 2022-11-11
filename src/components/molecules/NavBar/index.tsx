@@ -1,4 +1,4 @@
-import { Flex, Button, Text, Box } from '@chakra-ui/react';
+import { Flex, Button, Text } from '@chakra-ui/react';
 import { Spinner } from '@chakra-ui/react';
 import { ROUTES } from 'src/constants/routes';
 import Link from 'src/components/atoms/Link';

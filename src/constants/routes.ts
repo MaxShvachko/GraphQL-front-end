@@ -4,5 +4,6 @@ export const ROUTES = {
   HOME: '/',
   FORGOT_PASSWORD: '/forgot-password',
   CREATE_POST: '/create-post',
-  POST: (id: number) => `/post/${id}`
+  POST: (id: number) => `/post/${id}`,
+  EDIT_POST: (id: number) => `/post/edit/${id}`
 };

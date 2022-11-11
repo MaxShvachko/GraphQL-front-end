@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { POSTS_LIMIT } from 'src/constants/api';
 import { withUrqlClient } from 'src/utils/createUrqlClient';
 import { authorizedGuard } from 'src/utils/next';
-import { Post } from 'src/components/atoms/Post';
+import { Post } from 'src/components/molecules/Post';
 
 import { Wrapper } from 'src/components/template/Wrapper/Wrapper';
 import { PostsDocument, usePostsQuery } from 'src/generated/graphql';

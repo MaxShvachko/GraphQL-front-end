@@ -1,37 +1,40 @@
 import { Box, Button, useToast } from '@chakra-ui/react';
-import { Formik, Form } from 'formik';
-import { GetServerSideProps } from 'next';
+import { Form, Formik } from 'formik';
+import { useRouter } from 'next/router';
 
-import { ROUTES } from 'src/constants/routes';
 import { withUrqlClient } from 'src/utils/createUrqlClient';
+import { authorizedGuard } from 'src/utils/next';
+import useGetPost from 'src/hooks/useGetPost';
 import { InputField } from 'src/components/atoms/InputField';
 import { Wrapper } from 'src/components/template/Wrapper/Wrapper';
-import { useCreatePostMutation } from 'src/generated/graphql';
+import { PostDocument, useUpdatePostMutation } from 'src/generated/graphql';
 
-const CreatePost = () => {
-  const [{ fetching }, createPost] = useCreatePostMutation();
+const EditPost = () => {
   const toast = useToast();
+  const { query } = useRouter();
+  const postId = Number(query?.id);
+  const [{ data, fetching }] = useGetPost();
+  const [{}, updatePost] = useUpdatePostMutation();
 
   const initialValues = {
-    title: '',
-    text: ''
+    title: data?.post?.title || '',
+    text: data?.post?.text || ''
   };
 
   return (
-    <Wrapper variant="small">
+    <Wrapper>
       <Formik
         initialValues={initialValues}
-        onSubmit={async(values, { setValues }) => {
-          const { error } = await createPost({ options: values });
+        onSubmit={async(values) => {
+          const { error } = await updatePost({ id: postId, ...values });
 
           if (!error) {
             toast({
-              description: 'Post was created',
+              description: 'Post was edited',
               status: 'success',
-              duration: 9000,
+              duration: 2000,
               isClosable: true
             });
-            setValues(initialValues);
           }
         }}
       >
@@ -59,7 +62,7 @@ const CreatePost = () => {
               isLoading={fetching}
               type="submit"
             >
-              Create Post
+              Update Post
             </Button>
           </Form>
         )}
@@ -68,19 +71,8 @@ const CreatePost = () => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async(context) => {
-  if (!context.req.cookies?.qid) {
-    return {
-      redirect: {
-        destination: ROUTES.LOGIN,
-        permanent: false
-      }
-    };
-  }
+export const getServerSideProps = authorizedGuard(async(client, ctx) => {
+  await client.query(PostDocument, { id: Number(ctx?.query?.id) }, ctx).toPromise();
+});
 
-  return {
-    props: {}
-  };
-};
-
-export default withUrqlClient(CreatePost);
+export default withUrqlClient(EditPost);
