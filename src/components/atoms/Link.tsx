@@ -5,16 +5,18 @@ import { Url } from 'url';
 interface Props {
   children: React.ReactNode;
   href: Url | string;
+  height?: string;
   textColor?: ColorProps['textColor'];
 }
 
 const Link = ({
   href,
+  height,
   children,
   textColor = 'cyan.100'
 }: Props) => {
   return (
-    <ChackraLink alignItems="center" display="flex" textColor={textColor} mr={4}>
+    <ChackraLink height={height} alignItems="center" display="flex" textColor={textColor} mr={4}>
       <LinkNext href={href}>
         {children}
       </LinkNext>
