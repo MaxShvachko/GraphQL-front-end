@@ -43,8 +43,6 @@ export const Post = ({ textSnippet, voteStatus, id, title, creator, points }: Pr
   const isVotedDown = voteStatus === -1;
   const isAuthenticated = Boolean(data?.me?.user);
 
-  const isCreatorPost = creator.id === data?.me?.user?.id;
-
   return (
     <Flex mb={5} p={5} shadow="md" borderWidth="1px">
       <Flex mr={4} flexDir="column">
@@ -83,7 +81,7 @@ export const Post = ({ textSnippet, voteStatus, id, title, creator, points }: Pr
         <Text fontSize={14} fontStyle="italic">{creator.nick_name}</Text>
         <Text mt={4}>{textSnippet}</Text>
       </Box>
-      {isCreatorPost && <PostButtons id={id} />}
+      <PostButtons creatorId={creator.id} id={id} />
     </Flex>
   );
 };
