@@ -1,7 +1,6 @@
-import { Flex, Button, Text } from '@chakra-ui/react';
-import { Spinner } from '@chakra-ui/react';
-import { ROUTES } from 'src/constants/routes';
+import { Button, Flex, Spinner, Text } from '@chakra-ui/react';
 import Link from 'src/components/atoms/Link';
+import { ROUTES } from 'src/constants/routes';
 
 import { useLogoutMutation, useMeQuery } from 'src/generated/graphql';
 
