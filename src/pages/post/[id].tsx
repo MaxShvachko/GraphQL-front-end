@@ -12,6 +12,8 @@ const Post = () => {
   const { query } = useRouter();
   const postId = Number(query.id);
   const [{ data, error, fetching }] = useGetPost();
+  const creatorId = data?.post?.creator?.id;
+
   return (
     <Wrapper>
       {fetching && <div>Loading...</div>}
@@ -23,7 +25,7 @@ const Post = () => {
               <Heading mb={5}>{data?.post?.title}</Heading>
               <Box>{data?.post?.text}</Box>
             </Box>
-            <PostButtons id={postId} />
+            <PostButtons id={postId} creatorId={creatorId} />
           </Flex>
         )
         : <Box>Could not find post</Box>
